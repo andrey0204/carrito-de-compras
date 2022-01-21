@@ -1,8 +1,7 @@
 <template>
-  <div class="home">
-    <div class="title">NUETRO MENÚ</div>
+  <div class="category">
     <div class="grid">
-      <CategoryCard v-for="category in categories" :key="category.rid" :category="category" />
+      <ProductCard v-for="product in products" :key="product.product.rid" :product="product" />
     </div>
   </div>
 </template>
@@ -10,25 +9,24 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  name: 'Home',
+  name: 'Category',
   components: {
-    CategoryCard: () => import('../components/category-card.vue')
+    ProductCard: () => import('../components/product-card.vue')
+  },
+  mounted () {
+    this.$store.dispatch('loadCategory', this.$route.params.category)
   },
   computed: {
-    ...mapState(['categories'])
+    ...mapState(['category']),
+    products () {
+      return this.category?.products || []
+    }
   }
 }
 </script>
+
 <style lang="scss">
-.home {
-  .title {
-    text-align: center;
-    font-size: 30px;
-    line-height: 36px;
-    font-weight: 700;
-    color: #333;
-    padding: 20px 0;
-  }
+.category {
   .grid {
     display: flex;
     justify-content: center;
